@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcademyOS | Pro Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #a855f7; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #05050a; 
+            color: #f8fafc;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* The Control Center Box */
+        .control-panel-box {
+            background: rgba(15, 15, 25, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            width: 400px;
+        }
+
+        .input-group {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 8px 12px;
+            transition: 0.2s;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--accent);
+            background: rgba(168, 85, 247, 0.05);
+        }
+
+        /* High-Def ID Card */
+        .id-card-canvas {
+            width: 440px;
+            height: 270px;
+            background: #0a0a14;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, #131325 0%, #05050a 100%);
+            border-radius: 20px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.9);
+        }
+
+        .photo-slot {
+            width: 105px;
+            height: 105px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            overflow: hidden;
+            background: #0d0d1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mono { font-family: 'Space Mono', monospace; }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .id-card-canvas { 
+                box-shadow: none !important; border: 1px solid #000 !important;
+                position: absolute; top: 1cm; left: 1cm;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 gap-12">
+
+    <section class="control-panel-box p-8 rounded-[32px] no-print">
+        <header class="mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-black text-white tracking-tighter">OS <span class="text-purple-500">CORE</span></h1>
+                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-[0.3em]">ID Configurator</p>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-purple-600/20 border border-purple-500/30 flex items-center justify-center">
+                <div class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
+            </div>
+        </header>
+
+        <div class="space-y-4">
+            <div class="space-y-3">
+                <label class="text-[9px] font-black text-purple-400 uppercase tracking-widest ml-1">Identity & Media</label>
+                <div class="input-group">
+                    <input type="file" onchange="previewImage(event)" class="text-[10px] text-slate-400 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[9px] file:font-black file:bg-purple-600 file:text-white cursor-pointer w-full">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="in-name" value="Jannat Jamil" oninput="sync()" placeholder="Full Name" class="bg-transparent w-full text-xs outline-none text-white font-medium">
+                </div>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <label class="text-[9px] font-black text-purple-400 uppercase tracking-widest ml-1">Institutional Data</label>
+                <div class="input-group">
+                    <input type="text" id="in-school" value="TECH PURPLE POLYTECHNIC" oninput="sync()" placeholder="Institute Name" class="bg-transparent w-full text-xs outline-none text-white font-medium">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="input-group">
+                        <input type="text" id="in-dept" value="Cyber Security & AI" oninput="sync()" placeholder="Discipline" class="bg-transparent w-full text-xs outline-none text-white font-medium">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="in-roll" value="2026-TP-088" oninput="sync()" placeholder="Roll No" class="bg-transparent w-full text-xs outline-none text-white font-medium">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-2 flex items-center justify-between bg-black/40 p-3 rounded-xl border border-white/5">
+                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Theme Accent</span>
+                <input type="color" id="in-color" value="#a855f7" oninput="sync()" class="w-10 h-6 bg-transparent border-none cursor-pointer">
+            </div>
+        </div>
+
+        <button onclick="window.print()" class="mt-8 w-full py-4 bg-purple-600 hover:bg-purple-500 text-white font-black rounded-2xl shadow-lg shadow-purple-900/40 transition-all text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            Print Credential
+        </button>
+    </section>
+
+    <main class="flex flex-col items-center gap-8">
+        <div class="id-card-canvas p-10 flex flex-col justify-between z-10">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-4">
+                    <div id="card-logo" class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg border border-white/10">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 id="out-school" class="text-[11px] font-black leading-tight text-white uppercase w-36 tracking-tight">TECH PURPLE POLYTECHNIC</h2>
+                        <span class="text-[8px] text-purple-400 font-bold tracking-[.35em]">AUTH. SYSTEM ID</span>
+                    </div>
+                </div>
+                <div id="photo-container" class="photo-slot shadow-2xl">
+                    <svg id="default-icon" class="w-14 h-14 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <img id="out-photo" class="hidden w-full h-full object-cover">
+                </div>
+            </div>
+
+            <div>
+                <h3 id="out-name" class="text-3xl font-extrabold tracking-tighter text-white mb-0.5">Jannat Jamil</h3>
+                <p id="out-dept" class="text-[11px] font-bold text-purple-400 uppercase tracking-[0.25em]">Cyber Security & AI</p>
+            </div>
+
+            <div class="flex justify-between items-end">
+                <div class="flex gap-8">
+                    <div>
+                        <p class="text-[8px] font-bold text-slate-500 uppercase mb-1">Roll No</p>
+                        <p id="out-roll" class="mono text-[11px] font-bold text-white uppercase">2026-TP-088</p>
+                    </div>
+                    <div>
+                        <p class="text-[8px] font-bold text-slate-500 uppercase mb-1">Status</p>
+                        <p class="mono text-[11px] font-bold text-emerald-400">ACTIVE</p>
+                    </div>
+                </div>
+                <div class="bg-white p-1 rounded-lg">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=JANNAT-JAMIL-TECH-P" class="w-10 h-10 grayscale">
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-3 py-2 px-6 bg-white/5 rounded-full border border-white/5 no-print">
+            <div class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_#a855f7]"></div>
+            <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Rendering Engine: 1:1 Scale</span>
+        </div>
+    </main>
+
+    <script>
+        function sync() {
+            const name = document.getElementById('in-name').value;
+            const school = document.getElementById('in-school').value;
+            const roll = document.getElementById('in-roll').value;
+            const dept = document.getElementById('in-dept').value;
+            const accent = document.getElementById('in-color').value;
+
+            document.getElementById('out-name').innerText = name || "Jannat Jamil";
+            document.getElementById('out-school').innerText = school;
+            document.getElementById('out-roll').innerText = roll;
+            document.getElementById('out-dept').innerText = dept;
+            
+            // Sync Accent
+            document.documentElement.style.setProperty('--accent', accent);
+            document.getElementById('out-dept').style.color = accent;
+            document.getElementById('card-logo').style.backgroundColor = accent;
+            document.getElementById('photo-container').style.borderColor = accent;
+        }
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = document.getElementById('out-photo');
+                const icon = document.getElementById('default-icon');
+                img.src = reader.result;
+                img.classList.remove('hidden');
+                icon.classList.add('hidden');
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        sync();
+    </script>
+</body>
+</html>
+
+
+
